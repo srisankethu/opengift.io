@@ -22,16 +22,36 @@
             <h1 class="text-center">Projects</h1>
             <div class="u-h-4 u-w-50 bg-primary rounded mt-4 u-mb-40 mx-auto"></div>
 
- 
+
             <div class="sorting-list clearfix u-mb-20">
                 <ul>
                     <li>Order by</li>
-                    <li class="active">
-                        <a class="" href="#">Rating</a><i class="lnr lnr-chevron-down u-fs-12 ml-1"></i>
+                    {% if order_by == '' %}
+                    <li id="rating" class="">
+                        <a class="" href="{% url 'PManager.viewsExt.projects.projectList' page_no = page_no order_by='rating' %}">Rating</a><i class="lnr lnr-chevron-up u-fs-12 ml-1"></i>
                     </li>
-                    <li class="">
-                        <a class="" href="#">Budget</a><i class="lnr lnr-chevron-up u-fs-12 ml-1"></i>
+                    <li id="budget" class="">
+                        <a class="" href="{% url 'PManager.viewsExt.projects.projectList' page_no = page_no order_by='budget' %}">Budget</a><i class="lnr lnr-chevron-up u-fs-12 ml-1"></i>
                     </li>
+                    {% else %}
+                        {% if order_by == 'rating' %}
+                        <li id="rating" class="active">
+                            <a class="" href="{% url 'PManager.viewsExt.projects.projectList' page_no = page_no order_by='rating' %}">Rating</a><i class="lnr lnr-chevron-down u-fs-12 ml-1"></i>
+                        </li>
+                        <li id="budget" class="">
+                            <a class="" href="{% url 'PManager.viewsExt.projects.projectList' page_no = page_no order_by='budget' %}">Budget</a><i class="lnr lnr-chevron-up u-fs-12 ml-1"></i>
+                        </li>
+                        {% else %}
+                            {% if order_by == 'budget' %}
+                            <li id="rating" class="">
+                                <a class="" href="{% url 'PManager.viewsExt.projects.projectList' page_no = page_no order_by='rating' %}">Rating</a><i class="lnr lnr-chevron-up u-fs-12 ml-1"></i>
+                            </li>
+                            <li id="budget" class="active">
+                                <a class="" href="{% url 'PManager.viewsExt.projects.projectList' page_no = page_no order_by='budget' %}">Budget</a><i class="lnr lnr-chevron-down u-fs-12 ml-1"></i>
+                            </li>
+                            {% endif %}
+                        {% endif %}
+                    {% endif %}
                 </ul>
             </div>
 
@@ -52,9 +72,9 @@
                 <div class="col-lg-4">
                 <div class="categoryselect" role="application">
                     <div class="demo-section k-content">
-                        
 
-                        
+
+
                         <select id="required" multiple="multiple" data-placeholder="Project tags...">
                             <option>SEO</option>
                             <option>PHP</option>
@@ -64,7 +84,7 @@
                             <option>Bitrix</option>
                             <option>Joomla</option>
                         </select>
-                        
+
                     </div>
                 </div>
                 </div>
@@ -106,7 +126,7 @@
                 <div class="col-lg-4 col-md-6 u-mb-100 project-item-big-wrapper js-project-item">
                     <div class="project-item-wrapper relative">
                         <style>
-                          
+
                         </style>
                         <div class="project-item-img-wrapper">
 {#                            {% for user in project.getUsers %}#}
@@ -121,7 +141,7 @@
 
                             <h4 class="u-fs-26 u-mb-10 u-mt-20">
                                 <a href="/project/{{ project.id }}/public/" class="js-project-name">{{ project.name }}</a>
-                                
+
                             </h4>
                             <div class="clearfix">
                                 <div class="float-left">
@@ -132,14 +152,14 @@
                                         <i class="fa fa-credit-card color-primary mr-2" aria-hidden="true"></i>
                                         Budget: $ {{ project.donated | floatformat }}</div>
                                 </div>
-                            
+
                                         {% if not project.public%}
                                         <div class="float-left">
                                                 <i class="fa fa-key" aria-hidden="true"></i> <small>Hidden</small>
                                         </div>
-                                      
+
                                         {% endif %}
-                          
+
                             </div>
 
                             <!---ТРЕБУЮТСЯ - ВАКАНСИИ
@@ -150,7 +170,7 @@
                             -->
 
 
-        
+
                             <div class="widget-content tags-list u-mb-15">
                                 {% for tag in project.tagList %}
                                     <a href="" style="background: rgba(1, 1, 1, 0.05);">{{ tag.name }}</a>
@@ -165,6 +185,28 @@
                 {% endfor %}
 
             </div>
+            <nav aria-label="Page navigation">
+              <ul class="pagination justify-content-end">
+                {% if page_no|add:'-1' <= 0%}
+                <li class="page-item disabled">
+                  <a class="page-link" href="#" tabindex="-1">Previous</a>
+                </li>
+                {% else %}
+                <li class="page-item">
+                  <a class="page-link" href="{{% url 'PManager.viewsExt.projects.projectList' page_no = page_no|add:'-1' order_by = order_by %}}" tabindex="-1">Previous</a>
+                </li>
+                {% endif %}
+                {% if page_no|add:'+1' > total_pages %}
+                <li class="page-item disabled">
+                <a class="page-link" href="#">Next</a>
+                </li>
+                {% else %}
+                <li class="page-item">
+                <a class="page-link" href="{{% url 'PManager.viewsExt.projects.projectList' page_no = page_no|add:'-1' order_by = order_by %}}">Next</a>
+                </li>
+                {% endif %}
+              </ul>
+            </nav>
         </div>
     </section>
 {% endblock %}

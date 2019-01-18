@@ -22,6 +22,7 @@ from django.core.context_processors import csrf
 from django.db.models import Sum
 from PManager.viewsExt.tools import templateTools
 from tracker.settings import GIFT_USD_RATE
+from math import ceil
 
 
 class InterfaceForm(forms.ModelForm):
@@ -102,19 +103,34 @@ def projectList(request, **kwargs):
 
     aProjects = []
     projects = PM_Project.objects.filter(public=True).order_by('-id')
+
+    page_size = 10
+    if not kwargs.get('page_no'):
+        kwargs['page_no'] = 1
+
     for project in projects:
         setattr(project, 'tagList', [p for p in project.industries.filter(active=True)])
         aProjects.append(project)
-    
+
     if request.user.is_authenticated():
         user_projects = PM_Project.objects.filter(public=False, author=request.user)
         if user_projects.exists():
             aProjects = list(user_projects) + aProjects
 
+    if kwargs['order_by'] == 'rating':
+        aProjects = sorted(aProjects, key=lambda t: t.rating)
+    elif kwargs['order_by'] == 'budget':
+        aProjects = sorted(aProjects, key=lambda t: t.donated)
+
+    total_pages = int(ceil(float(len(aProjects))/page_size))
+
     c = RequestContext(request, {
         'specialties': aSpec,
         'spectree': recursiveTreeDraw({'subitems': aSpec.values()}),
-        'project_list': aProjects
+        'project_list': aProjects[(kwargs['page_no'] - 1)*page_size:min(kwargs['page_no']*page_size, len(aProjects))],
+        'order_by': kwargs['order_by'],
+        'page_no': kwargs['page_no'],
+        'total_pages': total_pages
     })
     c.update(kwargs)
     t = loader.get_template('details/project_list.html')

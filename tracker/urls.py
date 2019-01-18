@@ -80,14 +80,14 @@ urlpatterns = patterns('',
                        url(r'^pro/', MainPage.likeAPro),
                        url(r'^achievements/', MainPage.indexRender, {'widgetList': ["achievements"]}),
                        url(r'^user_detail/', MainPage.indexRender, {'widgetList': ["user_detail"], 'template': 'new'}, name='user-detail'),
-                       
+
                        url(r'^sendfile/', fileSave),
                        url(r'^calendar/', MainPage.indexRender,
                            {'widgetList': ["project_calendar"], 'activeMenuItem': 'calendar'}),
                        url(r'^opengifters/(?P<user_id>[0-9_]+)/', Public.backerProfile),
                        url(r'^profile/edit/', MainPage.indexRender,
                            {'widgetList': ["profile_edit"], 'activeMenuItem': 'profile', 'template': 'new'}),
-                       # {{{ Project URLS 
+                       # {{{ Project URLS
                        url(r'^project/(?P<project_id>[0-9_]+)/server-setup', project_server_setup),
                        url(r'^project/(?P<project_id>[0-9_]+)/server-status', project_server_status),
                        url(r'^project/(?P<project_id>[0-9_]+)/public/', projectDetailPublic),
@@ -101,7 +101,7 @@ urlpatterns = patterns('',
                        url(r'^project/edit/', MainPage.indexRender,
                            {'widgetList': ["project_edit"], 'activeMenuItem': 'project'}),
                        url(r'^project/add/', projectDetailAdd),
-                       url(r'^project/list/', projectList, {'need_inverse': True}),
+                       url(r'^project/list/(?P<page_no>\d*)/(?P<order_by>\S*)', projectList, {'need_inverse': True}),
                        url(r'^project/edit/check_repository_name', checkUniqRepNameResponder),
                        # }}}
                        # {{{ Tasks
@@ -159,7 +159,7 @@ urlpatterns = patterns('',
                        url(r'^login/github/$', MainPage.github_auth),
                        url(r'^login/$', MainPage.auth),
                        # }}}
-                       
+
                        url(r'^take_your_gift/$', MainPage.takeGift),
                        url(r'^change_password/$', MainPage.changePassword),
                        url(r'^add_timer/', add_timer),
