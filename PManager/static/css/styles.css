@@ -6489,7 +6489,7 @@ body {
    
    .circle {
      stroke: #4CC790;
-     fill: #e3e3e3;
+     fill: transparent;
      stroke-width: 2.8;  
    }
 

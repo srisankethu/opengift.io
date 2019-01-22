@@ -69,6 +69,11 @@ class Public:
     @staticmethod
     def christmas(request, need_inverse=False):
         result = ''
+        import logging
+        logger = logging.getLogger('log')
+        logger.debug(
+            request.META
+        )
         if request.POST.get('submit', None):
             from PManager.viewsExt.tools import emailMessage
 

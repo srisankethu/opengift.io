@@ -469,8 +469,10 @@
 </script>
 <script>
   window.intercomSettings = {
+  {% if request.user.email %}
     email: "{{ request.user.email }}",
     user_id: "{{ request.user.last_name }} {{ request.user.first_name }}",
+  {% endif %}
     app_id: "ryh8lewr"
   };
 </script>
