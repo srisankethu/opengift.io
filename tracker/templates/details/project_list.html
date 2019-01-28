@@ -109,13 +109,13 @@
                           
                         </style>
                         <div class="project-item-img-wrapper">
-                            {% for user in project.getUsers %}
-                                {% if forloop.counter < 5 %}
-                                    {% if user.first_name != 'Yegor' %}
-                                <a href="#" class="rounded-circle u-w-50 project-item-img-wrapper-avatar" style="background-color: #39c2d3; background-image: url('{{ user.get_profile.avatarSrc }}');"></a>
-                                    {% endif %}
-                                {% endif %}
-                            {% endfor %}
+{#                            {% for user in project.getUsers %}#}
+{#                                {% if forloop.counter < 5 %}#}
+{#                                    {% if user.first_name != 'Yegor' %}#}
+{#                                <a href="#" class="rounded-circle u-w-50 project-item-img-wrapper-avatar" style="background-color: #39c2d3; background-image: url('{{ user.get_profile.avatarSrc }}');"></a>#}
+{#                                    {% endif %}#}
+{#                                {% endif %}#}
+{#                            {% endfor %}#}
                         </div>
                             <div class="p-4 py-5 border rounded box-shadow-v2--onHover project-item-inner margin-top-u-h-50">
 
